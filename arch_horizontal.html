@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attributes – Commercial Intelligence Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:         #FFFFFF;
+    --bg-alt:     #F7F8FA;
+    --border:     #E4E8EE;
+    --border-mid: #D0D6E0;
+    --navy:       #0B1F3A;
+    --navy-mid:   #1A3458;
+    --navy-light: #2E4E78;
+    --orange:     #E8510A;
+    --orange-bg:  #FEF0E8;
+    --orange-bdr: #F5C5A8;
+    --blue:       #2563EB;
+    --blue-bg:    #EFF6FF;
+    --blue-bdr:   #BFDBFE;
+    --purple:     #7C3AED;
+    --purple-bg:  #F5F3FF;
+    --purple-bdr: #DDD6FE;
+    --muted:      #6B7A99;
+    --text:       #2C3444;
+    /* legacy aliases so existing rules still work */
+    --accent:     #E8510A;
+    --accent2:    #2563EB;
+    --accent3:    #E8510A;
+    --accent4:    #7C3AED;
+    --node-bg:    #FFFFFF;
+    --dim:        #E4E8EE;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    padding: 32px 24px 40px;
+    min-width: 1400px;
+  }
+
+  header {
+    margin-bottom: 36px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+  }
+
+  header .sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.08em;
+  }
+
+  header .badge {
+    font-size: 9px;
+    font-family: 'Syne', sans-serif;
+    color: var(--orange);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 1px solid var(--orange-bdr);
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--orange-bg);
+  }
+
+  /* MAIN FLOW — horizontal */
+  .flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+  }
+
+  /* COLUMN */
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .col-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* ARROW between cols */
+  .arrow-h {
+    display: flex;
+    align-items: center;
+    margin-top: 44px; /* align with node tops */
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .arrow-h .line {
+    height: 1px;
+    width: 28px;
+    background: linear-gradient(to right, var(--border), var(--border-mid));
+  }
+
+  .arrow-h .head {
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid var(--border-mid);
+  }
+
+  .arrow-h.double {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 56px;
+  }
+
+  .arrow-h.double .row {
+    display: flex;
+    align-items: center;
+  }
+
+  /* NODES */
+  .node {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 190px;
+    margin-bottom: 10px;
+    position: relative;
+    transition: border-color 0.15s;
+  }
+
+  .node:hover { box-shadow: 0 4px 16px rgba(11,31,58,0.08); }
+
+  .node-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .node h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .node ul {
+    list-style: none;
+  }
+
+  .node ul li {
+    font-size: 9.5px;
+    color: var(--muted);
+    padding: 1.5px 0 1.5px 9px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .node ul li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--dim);
+  }
+
+  .node p.note {
+    font-size: 9.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 5px;
+  }
+
+  /* color variants — light mode */
+  .green { border-color: var(--orange-bdr); }
+  .green:hover { border-color: var(--orange); }
+  .green .node-tag { background: var(--orange-bg); color: var(--orange); }
+  .green h3 { color: var(--navy); }
+
+  .blue { border-color: var(--blue-bdr); }
+  .blue:hover { border-color: var(--blue); }
+  .blue .node-tag { background: var(--blue-bg); color: var(--blue); }
+  .blue h3 { color: var(--navy-mid); }
+
+  .orange { border-color: var(--orange-bdr); }
+  .orange:hover { border-color: var(--orange); }
+  .orange .node-tag { background: var(--orange-bg); color: var(--orange); }
+  .orange h3 { color: var(--navy); }
+
+  .purple { border-color: var(--purple-bdr); }
+  .purple:hover { border-color: var(--purple); }
+  .purple .node-tag { background: var(--purple-bg); color: var(--purple); }
+  .purple h3 { color: var(--navy-mid); }
+
+  .white { border-color: var(--border); }
+  .white:hover { border-color: var(--border-mid); }
+  .white .node-tag { background: var(--bg-alt); color: var(--muted); }
+  .white h3 { color: var(--navy); }
+
+  /* formula */
+  .formula {
+    font-size: 9px;
+    color: var(--navy-mid);
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 5px 8px;
+    margin-top: 6px;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  /* tier badges */
+  .tiers { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+  .tier { font-size: 8px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+  .tier.a { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-bdr); }
+  .tier.b { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bdr); }
+  .tier.c { background: var(--bg-alt); color: var(--muted); border: 1px solid var(--border); }
+
+  /* channels */
+  .channels { display: flex; gap: 4px; margin-top: 7px; flex-wrap: wrap; }
+  .channel {
+    font-size: 8px; padding: 2px 6px; border-radius: 3px;
+    border: 1px solid var(--orange-bdr); color: var(--orange);
+    background: var(--orange-bg); font-weight: 600;
+  }
+
+  /* crm note */
+  .crm {
+    font-size: 9px; color: var(--muted);
+    border: 1px dashed var(--border); border-radius: 4px;
+    padding: 4px 7px; margin-top: 6px; display: block;
+    background: var(--bg-alt);
+  }
+
+  /* SIGNAL col — two nodes stacked with a merge arrow */
+  .signal-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .merge-line {
+    width: 1px;
+    height: 14px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+
+  .merge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border-mid);
+    margin: 0 auto;
+  }
+
+  /* FEEDBACK arc at bottom */
+  .feedback {
+    margin-top: 28px;
+    border: 1px solid var(--orange-bdr);
+    border-radius: 8px;
+    padding: 14px 20px;
+    background: var(--orange-bg);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .feedback .icon {
+    font-size: 20px;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .feedback h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .feedback p {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* diagonal arrow for signal merging down */
+  .v-arrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 20px;
+    height: 20px;
+  }
+
+  /* the parallel signal+regulation section */
+  .intel-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .intel-pair {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .bracket {
+    width: 1px;
+    height: 20px;
+    background: linear-gradient(to bottom, var(--border), var(--border-mid));
+    margin: 0 auto;
+  }
+
+  footer {
+    margin-top: 24px;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+
+  /* wide node for ranking and outbound */
+  .node.wide { width: 200px; }
+  .node.tall { width: 190px; }
+
+  /* source API badge */
+  .api-badge {
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-top: 5px;
+    display: inline-block;
+    font-weight: 600;
+  }
+  .api-free { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bdr); }
+  .api-paid { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-bdr); }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Commercial Intelligence Architecture</h1>
+    <div class="sub">EnergyLeads × Attributes · Full system flow</div>
+  </div>
+  <div class="badge">Confidential</div>
+</header>
+
+<div class="flow">
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COL 1 — DATA SOURCES -->
+  <!-- ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-label">① Data Sources</div>
+
+    <div class="node green">
+      <span class="node-tag">TAM · Public · Free</span>
+      <h3>Market Universe</h3>
+      <ul>
+        <li><a href="https://transparency.entsog.eu/" target="_blank" style="color:inherit;">ENTSOG</a> — EU operators + hubs</li>
+        <li><a href="https://www.energytraderseurope.org/who-we-are/our-members" target="_blank" style="color:inherit;">Energy Traders Europe</a> — member list</li>
+        <li><a href="https://www.acer-remit.eu/portal/european-register" target="_blank" style="color:inherit;">REMIT</a> — active participants</li>
+        <li><a href="https://www.gem.wiki/Category:Gas_plants" target="_blank" style="color:inherit;">GEM Wiki</a> — plant owners</li>
+        <li><a href="https://www.businessenergyuk.com/gas-companies" target="_blank" style="color:inherit;">Business Energy UK</a></li>
+      </ul>
+    </div>
+
+    <div class="node blue">
+      <span class="node-tag">News · RSS · Free</span>
+      <h3>News & Signal Feeds</h3>
+      <ul>
+        <li><a href="https://lngprime.com/feed/" target="_blank" style="color:inherit;">LNGPrime</a> — contracts + tenders</li>
+        <li><a href="https://www.offshore-energy.biz/feed/" target="_blank" style="color:inherit;">Offshore Energy</a> — oil & gas</li>
+        <li><a href="https://www.naturalgasworld.com/rss" target="_blank" style="color:inherit;">Natural Gas World</a></li>
+        <li><a href="https://www.energyvoice.com/feed/" target="_blank" style="color:inherit;">Energy Voice</a> — LNG & gas</li>
+        <li><a href="https://www.reuters.com/site-search/?query=lng" target="_blank" style="color:inherit;">Reuters</a> — LNG search</li>
+        <li><a href="https://www.google.com/search?q=lng+spa" target="_blank" style="color:inherit;">Google News</a> — weekly queries</li>
+      </ul>
+    </div>
+
+    <div class="node orange">
+      <span class="node-tag">Regulation · Public · Free</span>
+      <h3>Regulatory & ESG Sources</h3>
+      <ul>
+        <li><a href="https://www.transitionpathwayinitiative.org/corporates/oil-gas" target="_blank" style="color:inherit;">Transition Pathway Initiative</a></li>
+        <li><a href="https://influencemap.org/Reports?tag=Energy" target="_blank" style="color:inherit;">InfluenceMap</a> — energy reports</li>
+        <li>Company annual + ESG reports</li>
+        <li>EU Commission press releases</li>
+        <li><a href="https://www.linkedin.com/jobs/" target="_blank" style="color:inherit;">LinkedIn job postings</a> — signal</li>
+        <li>Event attendee scraping</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ARROW 1→2 -->
+  <div class="arrow-h">
+    <div class="line"></div>
+    <div class="head"></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COL 2 — COMPANY MAPPING -->
+  <!-- ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-label">② Company Universe</div>
+
+    <div class="node green wide">
+      <span class="node-tag">Account DB</span>
+      <h3>Full Gas Ecosystem Map</h3>
+      <ul>
+        <li>Upstream producers</li>
+        <li>LNG exporters</li>
+        <li>LNG importers</li>
+        <li>Traders</li>
+        <li>Utilities</li>
+        <li>Midstream / TSOs</li>
+        <li>Terminal operators</li>
+      </ul>
+      <div class="tiers">
+        <span class="tier a">A &gt;20 TWh</span>
+        <span class="tier b">B 5–20</span>
+        <span class="tier c">C 1–5</span>
+      </div>
+      <p class="note" style="margin-top:6px">HQ · Segment · TWh · LNG vs pipeline · EU exposure · Russian risk</p>
+    </div>
+
+  </div>
+
+  <!-- ARROW 2→3 -->
+  <div class="arrow-h" style="margin-top:44px">
+    <div class="line"></div>
+    <div class="head"></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COL 3 — INTELLIGENCE (2 tracks) -->
+  <!-- ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-label">③ Intelligence Layer</div>
+
+    <div class="intel-pair">
+
+      <!-- TRACK A: Regulation + News → Pressure -->
+      <div class="node blue" style="width:200px">
+        <span class="node-tag">Structural · Permanent</span>
+        <h3>Pressure Index</h3>
+        <p class="note" style="margin-bottom:4px; color:rgba(37,99,235,0.45)">Why this company is a fit</p>
+        <ul>
+          <li>EU methane regulation</li>
+          <li>CSRD / Scope 3</li>
+          <li>Russian-origin risk</li>
+          <li>ESG-linked contracts</li>
+          <li>Investor ESG pressure</li>
+        </ul>
+        <div class="formula">Reg + ESG + Financial + Geopolitical</div>
+      </div>
+
+      <div class="bracket"></div>
+      <div class="merge-dot"></div>
+      <div class="bracket"></div>
+
+      <!-- TRACK B: Signals → Timing -->
+      <div class="node white" style="width:200px">
+        <span class="node-tag">Situational · Real-Time</span>
+        <h3>Signal Urgency</h3>
+        <p class="note" style="margin-bottom:4px; color:rgba(11,31,58,0.35)">Why contact them NOW</p>
+        <ul>
+          <li>New LNG SPA signed</li>
+          <li>Terminal expansion / FID</li>
+          <li>Methane reg update</li>
+          <li>ESG / compliance hiring</li>
+          <li>Sustainability report drop</li>
+          <li>M&A activity</li>
+        </ul>
+        <p class="note" style="margin-top:5px; font-size:8.5px">RSS feeds · manual log · press scan</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ARROW 3→4 -->
+  <div class="arrow-h" style="margin-top:44px">
+    <div class="line"></div>
+    <div class="head"></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COL 4 — PRIORITY RANKING -->
+  <!-- ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-label">④ Priority Ranking</div>
+
+    <div class="node orange wide">
+      <span class="node-tag">Ranked · Weekly</span>
+      <h3>Priority Score Engine</h3>
+      <div class="formula">
+        Volume Weight<br>
+        + Pressure Index<br>
+        + Signal Urgency
+      </div>
+      <p class="note" style="margin-top:8px">Top 15–20 accounts to contact this week</p>
+      <p class="note" style="margin-top:4px">"Why Now" brief per account</p>
+      <p class="note" style="margin-top:4px">Filtered by geo · tier · urgency</p>
+      <p class="note" style="margin-top:6px; font-size:8.5px; color:rgba(232,81,10,0.45)">Updated every Monday</p>
+    </div>
+
+  </div>
+
+  <!-- ARROW 4→5 -->
+  <div class="arrow-h" style="margin-top:44px">
+    <div class="line"></div>
+    <div class="head"></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COL 5 — ENRICHMENT -->
+  <!-- ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-label">⑤ Lead Enrichment</div>
+
+    <div class="node purple">
+      <span class="node-tag">Persona Layer</span>
+      <h3>Decision-Maker Targeting</h3>
+      <ul>
+        <li>Originator / LNG desk</li>
+        <li>ESG / Sustainability Lead</li>
+        <li>Compliance / Regulatory</li>
+        <li>Gas Procurement / Buyer</li>
+      </ul>
+    </div>
+
+    <div class="node purple" style="margin-top:10px">
+      <span class="node-tag">Enrichment Stack</span>
+      <h3>Contact Data</h3>
+      <ul>
+        <li>LinkedIn Sales Navigator</li>
+        <li>Apollo — broad database</li>
+        <li>Fullenrich — verified email</li>
+        <li>Prospeo — phone numbers</li>
+        <li>NeverBounce — validation</li>
+      </ul>
+      <p class="note" style="margin-top:5px; font-size:8.5px">All tools API-connected</p>
+    </div>
+
+  </div>
+
+  <!-- ARROW 5→6 -->
+  <div class="arrow-h" style="margin-top:44px">
+    <div class="line"></div>
+    <div class="head"></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COL 6 — OUTBOUND -->
+  <!-- ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-label">⑥ Outbound Execution</div>
+
+    <div class="node orange wide">
+      <span class="node-tag">EnergyLeads</span>
+      <h3>Signal-Driven Outbound</h3>
+      <p class="note">Each sequence built around a specific "why now" signal. Never generic.</p>
+      <div class="channels" style="margin-top:8px">
+        <span class="channel">Cold Email</span>
+        <span class="channel">LinkedIn DM</span>
+        <span class="channel">Cold Call</span>
+        <span class="channel">Events</span>
+      </div>
+      <p class="note" style="margin-top:6px; font-size:8.5px">Mailforge domains · Instantly · HeyReach</p>
+    </div>
+
+    <div class="node green" style="margin-top:10px">
+      <span class="node-tag">Output</span>
+      <h3>Qualified Meeting</h3>
+      <p class="note">Commercial meeting with high-volume gas market actor</p>
+      <span class="crm">→ Syncs to Attributes CRM (TBD)</span>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FEEDBACK LOOP -->
+<div class="feedback">
+  <div class="icon">↺</div>
+  <div>
+    <h4>Feedback Loop — System Compounds Monthly</h4>
+    <p>Meeting outcomes · objections · reply signals · conversion data → fed back into account scoring → refines pressure index → improves next week's priority list. Month 3 is materially sharper than Month 1.</p>
+  </div>
+</div>
+
+<footer>EnergyLeads × Attributes &nbsp;·&nbsp; Commercial Intelligence System &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; 2026</footer>
+
+</body>
+</html>
